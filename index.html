@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Task Pay Ads</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+<!-- Telegram WebApp -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<!-- Monetag SDK (YOUR REAL SDK) -->
+<script src="//libtl.com/sdk.js"
+        data-zone="10387801"
+        data-sdk="show_10387801"></script>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#0f1224;
+  color:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+.box{
+  width:100%;
+  max-width:380px;
+  background:#181c3a;
+  border-radius:20px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 0 30px rgba(0,0,0,.5);
+}
+h1{
+  margin-top:0;
+  font-size:24px;
+}
+.user{
+  opacity:.8;
+  font-size:14px;
+  margin-bottom:20px;
+}
+.btn{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  background:linear-gradient(135deg,#6a5cff,#8b7bff);
+  color:#fff;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.btn:disabled{
+  opacity:.6;
+}
+.status{
+  margin-top:15px;
+  font-size:14px;
+  opacity:.8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>▶ Watch Ads</h1>
+  <div class="user" id="userInfo">Loading...</div>
+
+  <button class="btn" id="watchBtn">WATCH AD</button>
+
+  <div class="status" id="status">Ready</div>
+</div>
+
+<script>
+const tg = window.Telegram.WebApp;
+tg.ready();
+tg.expand();
+
+const user = tg.initDataUnsafe.user;
+document.getElementById("userInfo").innerText =
+  user
+  ? `@${user.username || user.first_name} | ID: ${user.id}`
+  : "Telegram User";
+
+const btn = document.getElementById("watchBtn");
+const status = document.getElementById("status");
+
+btn.onclick = () => {
+  if(typeof show_10387801 !== "function"){
+    status.innerText = "Ad not ready. Try again.";
+    return;
+  }
+
+  status.innerText = "Loading ad...";
+  btn.disabled = true;
+
+  show_10387801()
+    .then(() => {
+      status.innerText = "Ad watched successfully ✅";
+      btn.disabled = false;
+    })
+    .catch(() => {
+      status.innerText = "Ad failed. Try later ❌";
+      btn.disabled = false;
+    });
+};
+</script>
+
+</body>
+</html>
